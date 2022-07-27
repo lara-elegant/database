@@ -18,12 +18,12 @@ class Seeder
     {
         $file = database_path('seeders/' . $class . '.php');
 
-        if(file_exists($file)) {
+        if (file_exists($file)) {
             require_once $file;
 
             $seeder = new $class;
 
-            if (! method_exists($seeder, 'run')) {
+            if (!method_exists($seeder, 'run')) {
                 show_error("Method [run] missing from " . get_class($seeder));
             }
 
