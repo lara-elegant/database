@@ -2,6 +2,8 @@
 
 namespace Elegant\Database;
 
+use InvalidArgumentException;
+
 class Seeder
 {
     public function __construct()
@@ -10,30 +12,56 @@ class Seeder
     }
 
     /**
-     * Run another seeder
+     * Run the given seeder class.
      *
-     * @param string $class Seeder class name
+     * @param  string  $class
+     * @param  bool  $silent
+     * @return void
      */
-    public static function call($class)
+    public function call($class)
     {
-        $file = database_path('seeders/' . $class . '.php');
+        $seeder = $this->resolve($class);
 
-        if (file_exists($file)) {
-            require_once $file;
+        $name = (new \ReflectionClass(get_class($seeder)))->getShortName();
 
-            $seeder = new $class;
+        $startTime = microtime(true);
 
-            if (!method_exists($seeder, 'run')) {
-                show_error("Method [run] missing from " . get_class($seeder));
-            }
+//        if ($silent === false) {
+//            echo "Seeding: {$name} \n";
+//        }
 
-            $seeder->run();
+        $seeder->__invoke();
 
-            echo $class . " seeding successfully! \n";
-        } else {
-            echo "Seeding file does not exist! \n";
+        $runTime = number_format((microtime(true) - $startTime) * 1000, 2);
+
+        echo "Seeded: {$name} ({$runTime}ms) \n";
+    }
+
+    /**
+     * Resolve an instance of the given seeder class.
+     *
+     * @param  string  $class
+     * @return \Elegant\Database\Seeder
+     */
+    protected function resolve($class)
+    {
+        return new $class;
+    }
+
+    /**
+     * Run the database seeds.
+     *
+     * @return mixed
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function __invoke()
+    {
+        if (! method_exists($this, 'run')) {
+            throw new InvalidArgumentException('Method [run] missing from '.get_class($this));
         }
 
+        return $this->run();
     }
 
     /**
