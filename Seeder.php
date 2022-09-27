@@ -15,7 +15,6 @@ class Seeder
      * Run the given seeder class.
      *
      * @param  string  $class
-     * @param  bool  $silent
      * @return void
      */
     public function call($class)
