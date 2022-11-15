@@ -555,11 +555,15 @@ class Blueprint
 
     /**
      * Create a new timestamp column on the table.
+     *
+     * @param string $column
+     * @param array $options
+     * @return ColumnDefinition
      */
-//    public function timestamp($column, $precision = 0)
-//    {
-//        return $this->addColumn('timestamp', $column, compact('precision'));
-//    }
+    public function timestamp(string $column, array $options = [])
+    {
+        return $this->addColumn('TIMESTAMP', $column, $options);
+    }
 
     /**
      * Create a new timestamp (with time zone) column on the table.
@@ -571,13 +575,22 @@ class Blueprint
 
     /**
      * Add nullable creation and update timestamps to the table.
+     *
+     * @return void
      */
-//    public function timestamps($precision = 0)
-//    {
+    public function timestamps()
+    {
+        $this->timestamp('created_at', [
+            'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP' => true
+        ]);
+
+        $this->timestamp('updated_at', [
+            'TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NULL DEFAULT NULL' => true
+        ]);
+
 //        $this->timestamp('created_at', $precision)->nullable();
-//
 //        $this->timestamp('updated_at', $precision)->nullable();
-//    }
+    }
 
     /**
      * Add nullable creation and update timestamps to the table.
