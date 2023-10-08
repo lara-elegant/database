@@ -9,6 +9,7 @@ use Elegant\Database\Model\Concerns\HidesAttributes;
 use Elegant\Support\Arr;
 use Elegant\Support\Collection;
 use Elegant\Support\Str;
+use InvalidArgumentException;
 
 abstract class Model extends \CI_Model
 {
@@ -305,7 +306,7 @@ abstract class Model extends \CI_Model
      *
      * @return $this
      *
-     * @throws \App\Exceptions\MassAssignmentException;
+     * @throws MassAssignmentException;
      */
     public function fill(): Model
     {
@@ -1195,7 +1196,7 @@ abstract class Model extends \CI_Model
 
     /**
      * @param string $trash
-     * @return Collection
+     * @return \Elegant\Support\Collection
      */
     public function all(string $trash = 'without'): Collection
     {
