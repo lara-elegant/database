@@ -1237,7 +1237,7 @@ abstract class Model extends \CI_Model
         return $this;
     }
 
-    public function whereNotNull($key): MY_Model
+    public function whereNotNull($key): Model
     {
         $this->where($key . ' IS NOT NULL', NULL, FALSE, FALSE, FALSE, TRUE);
 
@@ -1253,7 +1253,7 @@ abstract class Model extends \CI_Model
      *
      * @throws \InvalidArgumentException
      */
-    public function orderBy(string $column, string $direction = 'DESC'): MY_Model
+    public function orderBy(string $column, string $direction = 'DESC'): Model
     {
         $direction = strtoupper($direction);
 
